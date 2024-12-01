@@ -159,6 +159,42 @@ def home():
 
     return render_template('home.html', products=products)
 
+# @app.route('/favorites', methods=['GET', 'POST'])
+# def favorites():
+#     if 'user_id' not in session:
+#         flash("Please log in to access this page.", "warning")
+#         return redirect(url_for('login'))
+
+#     user_id = session['user_id']
+#     connection = get_db_connection()
+#     cursor = connection.cursor(dictionary=True)
+
+#     try:
+#         # Fetch favorite products
+#         query = """
+#             SELECT products.id AS product_id, products.name, products.quantity, products.price 
+#             FROM likes
+#             JOIN products ON likes.product_id = products.id
+#             WHERE likes.user_id = %s
+#         """
+#         cursor.execute(query, (user_id,))
+#         favorites = cursor.fetchall()
+
+#         if request.method == 'POST':
+#             action = request.form['action']
+#             product_id = request.form.get('product_id')
+
+#             if action == "remove":
+#                 # Remove the selected product from favorites
+#                 cursor.execute("DELETE FROM likes WHERE user_id = %s AND product_id = %s", (user_id, product_id))
+#                 connection.commit()
+#                 flash("Product removed from favorites.", "success")
+#     finally:
+#         cursor.close()
+#         connection.close()
+
+#     return render_template('favorites.html', favorites=favorites)
+
 @app.route('/favorites', methods=['GET', 'POST'])
 def favorites():
     if 'user_id' not in session:
@@ -170,7 +206,17 @@ def favorites():
     cursor = connection.cursor(dictionary=True)
 
     try:
-        # Fetch favorite products
+        if request.method == 'POST':
+            action = request.form.get('action')
+            product_id = request.form.get('product_id')
+
+            if action == "remove":
+                # Remove the selected product from favorites
+                cursor.execute("DELETE FROM likes WHERE user_id = %s AND product_id = %s", (user_id, product_id))
+                connection.commit()
+                return jsonify({"success": True, "message": "Product removed successfully"})
+
+        # Fetch favorite products for initial page load
         query = """
             SELECT products.id AS product_id, products.name, products.quantity, products.price 
             FROM likes
@@ -179,16 +225,6 @@ def favorites():
         """
         cursor.execute(query, (user_id,))
         favorites = cursor.fetchall()
-
-        if request.method == 'POST':
-            action = request.form['action']
-            product_id = request.form.get('product_id')
-
-            if action == "remove":
-                # Remove the selected product from favorites
-                cursor.execute("DELETE FROM likes WHERE user_id = %s AND product_id = %s", (user_id, product_id))
-                connection.commit()
-                flash("Product removed from favorites.", "success")
     finally:
         cursor.close()
         connection.close()

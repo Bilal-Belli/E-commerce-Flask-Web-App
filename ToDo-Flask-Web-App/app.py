@@ -11,8 +11,12 @@ db_config = {
     "host": "localhost",
     "user": "root",
     "password": "1234",
-    "database": "ecommerce"
+    "database": "bilalbelli$ecommerce"
 }
+
+# "host" for deployement : bilalbelli.mysql.pythonanywhere-services.com
+# "user": bilalbelli
+# "password": "1A2Z3E4R"
 
 # Database connection
 def get_db_connection():

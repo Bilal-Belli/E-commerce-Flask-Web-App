@@ -8,44 +8,13 @@
     <title>Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body.high-contrast {
-            background-color: black !important;
-            color: white !important;
-        }
-        .high-contrast .card {
-            background-color: #333 !important;
-            border-color: white !important;
-        }
-        .text-small {
-            font-size: 12px !important;
-        }
-        .text-medium {
-            font-size: 16px !important;
-        }
-        .text-large {
-            font-size: 20px !important;
-        }
-    </style>
 </head>
 <body>
-    <!-- Accessibility Toolbar -->
-    <div class="container-fluid bg-light py-2">
-        <div class="d-flex justify-content-end">
-            <button id="high-contrast-btn" class="btn btn-sm btn-outline-dark me-2">
-                <i class="fas fa-adjust"></i> High Contrast
-            </button>
-            <button id="text-small-btn" class="btn btn-sm btn-outline-dark me-1">A-</button>
-            <button id="text-medium-btn" class="btn btn-sm btn-outline-dark me-1">A</button>
-            <button id="text-large-btn" class="btn btn-sm btn-outline-dark">A+</button>
-        </div>
-    </div>
-
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"> 
-                <img width="35px" src="{{ url_for('static', filename='images/favicon.ico') }}" alt="logo"> E-commerce
+            <a class="navbar-brand" href="#">
+                <img width="35px" src="/static/images/favicon.ico" alt="logo"> E-commerce
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -62,10 +31,19 @@
                         <a class="nav-link" href="{{ url_for('logout') }}">Disconnect</a>
                     </li>
                 </ul>
+                <!-- Accessibility Toolbar -->
+                <div class="d-flex ms-3">
+                    <button id="high-contrast-btn" class="btn btn-sm btn-outline-light me-2">
+                        <i class="fas fa-adjust"></i>
+                    </button>
+                    <button id="text-small-btn" class="btn btn-sm btn-outline-light me-1">A-</button>
+                    <button id="text-medium-btn" class="btn btn-sm btn-outline-light me-1">A</button>
+                    <button id="text-large-btn" class="btn btn-sm btn-outline-light">A+</button>
+                </div>
             </div>
         </div>
     </nav>
-
+    
     <!-- Product Cards -->
     <div class="container mt-4">
         <div class="row">
@@ -96,28 +74,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url_for('static', filename='js/AJAXfeature.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/accessibilityTools.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Toggle High Contrast Mode
-        document.getElementById('high-contrast-btn').addEventListener('click', function() {
-            document.body.classList.toggle('high-contrast');
-        });
-
-        // Adjust Text Size
-        document.getElementById('text-small-btn').addEventListener('click', function() {
-            document.body.classList.remove('text-medium', 'text-large');
-            document.body.classList.add('text-small');
-        });
-
-        document.getElementById('text-medium-btn').addEventListener('click', function() {
-            document.body.classList.remove('text-small', 'text-large');
-            document.body.classList.add('text-medium');
-        });
-
-        document.getElementById('text-large-btn').addEventListener('click', function() {
-            document.body.classList.remove('text-small', 'text-medium');
-            document.body.classList.add('text-large');
-        });
-    </script>
 </body>
 </html>

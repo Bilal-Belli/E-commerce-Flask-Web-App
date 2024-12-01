@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, render_template_string
 from flask_bcrypt import Bcrypt
 import mysql.connector
 
@@ -11,12 +11,13 @@ db_config = {
     "host": "localhost",
     "user": "root",
     "password": "1234",
-    "database": "bilalbelli$ecommerce"
+    "database": "ecommerce"
 }
 
 # "host" for deployement : bilalbelli.mysql.pythonanywhere-services.com
 # "user": bilalbelli
 # "password": "1A2Z3E4R"
+# "database": "bilalbelli$ecommerce"
 
 # Database connection
 def get_db_connection():
@@ -263,6 +264,47 @@ def basket():
         connection.close()
 
     return render_template('basket.html', basket_items=basket_items, basket_total=basket_total, user_solde=user_solde)
+
+@app.route('/filter_products')
+def filter_products():
+    min_price = float(request.args.get('min_price', 0))
+    max_price = float(request.args.get('max_price', float('inf')))
+
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    
+    try:
+        query = "SELECT * FROM products WHERE price BETWEEN %s AND %s AND quantity > 0"
+        cursor.execute(query, (min_price, max_price))
+        filtered_products = cursor.fetchall()
+    finally:
+        cursor.close()
+        connection.close()
+
+    return render_template_string('''
+        {% for product in products %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">
+                            <strong>Price:</strong> ${{ product.price }} <br>
+                            <strong>Quantity:</strong> {{ product.quantity }}
+                        </p>
+                        <form method="post" class="d-flex justify-content-between">
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <button type="button" class="btn btn-outline-primary like-btn" data-product-id="{{ product.id }}">
+                                <i class="fas fa-heart"></i> Like
+                            </button>
+                            <button type="submit" name="action" value="add_to_basket" class="btn btn-outline-success">
+                                <i class="fas fa-shopping-cart"></i> Add to Basket
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    ''', products=filtered_products)
 
 if __name__ == '__main__':
     app.run(debug=True)

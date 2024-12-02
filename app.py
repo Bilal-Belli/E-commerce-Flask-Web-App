@@ -14,10 +14,10 @@ db_config = {
     "database": "ecommerce"
 }
 
-# "host" for deployement : bilalbelli.mysql.pythonanywhere-services.com
-# "user": bilalbelli
+# "host" for deployement : raedaltomy.mysql.pythonanywhere-services.com
+# "user": raedaltomy
 # "password": "1A2Z3E4R"
-# "database": "bilalbelli$ecommerce"
+# "database": "raedaltomy$ecommerce"
 
 # Database connection
 def get_db_connection():

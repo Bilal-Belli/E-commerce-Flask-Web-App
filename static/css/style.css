@@ -1,26 +1,3 @@
-body.high-contrast {
-    background-color: black !important;
-    color: white !important;
-}
-
-.high-contrast .card {
-    background-color: #333 !important;
-    border-color: white !important;
-}
-
-.text-small {
-    font-size: 12px !important;
-}
-
-.text-medium {
-    font-size: 16px !important;
-}
-
-.text-large {
-    font-size: 20px !important;
-}
-
-
 .price-filter {
     width: 100%;
     background: #fff;
@@ -117,4 +94,47 @@ body {
 
 footer {
     flex-shrink: 0;
+}
+
+/* Price Filter Specific */
+.price-filter input {
+    font-size: inherit; /* Adjust with body text size */
+}
+
+.price-filter {
+    color: inherit; /* Adjust with high contrast mode */
+    background-color: inherit; /* Adjust with high contrast mode */
+}
+
+
+/* High Contrast Styles */
+body.high-contrast {
+    background-color: black !important;
+    color: white !important;
+}
+
+.high-contrast .card, 
+.high-contrast .price-filter {
+    background-color: #333 !important;
+    border-color: white !important;
+}
+
+.high-contrast input, 
+.high-contrast button {
+    background-color: #444 !important;
+    color: white !important;
+    border-color: white !important;
+}
+
+/* Font Size Adjustments */
+.text-small {
+    font-size: 12px !important;
+}
+
+.text-medium {
+    font-size: 16px !important;
+}
+
+.text-large {
+    font-size: 20px !important;
 }

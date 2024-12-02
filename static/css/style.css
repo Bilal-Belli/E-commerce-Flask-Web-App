@@ -4,7 +4,10 @@
     border-radius: 10px;
     padding: 20px 25px 40px;
     box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+    color: inherit; /* Adjust with high contrast mode */
+    background-color: inherit; /* Adjust with high contrast mode */
 }
+
 .price-input {
     width: 100%;
     display: flex;
@@ -100,12 +103,6 @@ footer {
 .price-filter input {
     font-size: inherit; /* Adjust with body text size */
 }
-
-.price-filter {
-    color: inherit; /* Adjust with high contrast mode */
-    background-color: inherit; /* Adjust with high contrast mode */
-}
-
 
 /* High Contrast Styles */
 body.high-contrast {

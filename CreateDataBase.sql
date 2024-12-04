@@ -14,7 +14,8 @@ CREATE TABLE users (
 -- Table to store product categories
 CREATE TABLE categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL UNIQUE
+    name VARCHAR(255) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Table to store product information
@@ -23,10 +24,10 @@ CREATE TABLE products (
     name VARCHAR(255) NOT NULL UNIQUE,
     quantity INT NOT NULL CHECK (quantity >= 0),
     price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
-    image LONGBLOB,
-    category_id INT NOT NULL,
+    category_id INT,
+    image_path VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
 );
 
 -- Table to store basket items for each user

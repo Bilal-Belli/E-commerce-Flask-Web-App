@@ -126,6 +126,49 @@ def like_product():
         cursor.close()
         connection.close()
 
+# @app.route('/')
+# @app.route('/home', methods=['GET', 'POST'])
+# def home():
+#     if 'user_id' not in session:
+#         flash("Please log in to access this page.", "warning")
+#         return redirect(url_for('login'))
+
+#     user_id = session['user_id']
+#     connection = get_db_connection()
+#     cursor = connection.cursor(dictionary=True)
+
+#     try:
+#         # Fetch products with quantity > 0
+#         query = "SELECT * FROM products WHERE quantity > 0"
+#         cursor.execute(query)
+#         products = cursor.fetchall()
+
+#         # Handle 'add to basket' action
+#         if request.method == 'POST':
+#             product_id = request.form['product_id']
+#             action = request.form['action']
+
+#             if action == 'add_to_basket':
+#                 # Add product to basket
+#                 basket_query = """
+#                     INSERT INTO baskets (user_id, product_id, quantity)
+#                     VALUES (%s, %s, 1)
+#                     ON DUPLICATE KEY UPDATE quantity = quantity + 1
+#                 """
+#                 cursor.execute(basket_query, (user_id, product_id))
+#                 connection.commit()
+#                 flash("Product added to your basket!", "success")
+
+#         # Refresh the products list after any changes
+#         cursor.execute(query)
+#         products = cursor.fetchall()
+
+#     finally:
+#         cursor.close()
+#         connection.close()
+
+#     return render_template('home.html', products=products)
+
 @app.route('/')
 @app.route('/home', methods=['GET', 'POST'])
 def home():
@@ -138,8 +181,13 @@ def home():
     cursor = connection.cursor(dictionary=True)
 
     try:
-        # Fetch products with quantity > 0
-        query = "SELECT * FROM products WHERE quantity > 0"
+        # Fetch products with their category names and quantity > 0
+        query = """
+            SELECT products.*, categories.name AS category_name 
+            FROM products 
+            LEFT JOIN categories ON products.category_id = categories.id 
+            WHERE products.quantity > 0
+        """
         cursor.execute(query)
         products = cursor.fetchall()
 
@@ -279,7 +327,12 @@ def filter_products():
     cursor = connection.cursor(dictionary=True)
     
     try:
-        query = "SELECT * FROM products WHERE price BETWEEN %s AND %s AND quantity > 0"
+        query = """
+            SELECT products.*, categories.name AS category_name 
+            FROM products 
+            LEFT JOIN categories ON products.category_id = categories.id 
+            WHERE products.price BETWEEN %s AND %s AND products.quantity > 0
+        """
         cursor.execute(query, (min_price, max_price))
         filtered_products = cursor.fetchall()
     finally:
@@ -290,13 +343,18 @@ def filter_products():
         {% for product in products %}
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
+                    <img src="{{ product.image_path }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
                     <div class="card-body">
                         <h5 class="card-title">{{ product.name }}</h5>
+                        <span class="badge bg-secondary">{{ product.category_name }}</span>
                         <p class="card-text">
-                            <strong>Price:</strong> ${{ product.price }} <br>
+                            <strong>Price:</strong> ${{ product.price }}<br>
                             <strong>Quantity:</strong> {{ product.quantity }}
                         </p>
-                        <form method="post" class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#productModal{{ product.id }}">
+                            View Details
+                        </button>
+                        <form method="post" class="d-flex justify-content-between mt-2">
                             <input type="hidden" name="product_id" value="{{ product.id }}">
                             <button type="button" class="btn btn-outline-primary like-btn" data-product-id="{{ product.id }}">
                                 <i class="fas fa-heart"></i> Like
@@ -305,6 +363,25 @@ def filter_products():
                                 <i class="fas fa-shopping-cart"></i> Add to Basket
                             </button>
                         </form>
+                    </div>
+                </div>
+
+                <!-- Modal for Product Details -->
+                <div class="modal fade" id="productModal{{ product.id }}" tabindex="-1" aria-labelledby="productModalLabel{{ product.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="productModalLabel{{ product.id }}">{{ product.name }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img src="{{ product.image_path }}" alt="{{ product.name }}" class="img-fluid mb-3">
+                                <p><strong>Category:</strong> {{ product.category_name }}</p>
+                                <p><strong>Price:</strong> ${{ product.price }}</p>
+                                <p><strong>Quantity:</strong> {{ product.quantity }}</p>
+                                <!-- Add more detailed information here if needed -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

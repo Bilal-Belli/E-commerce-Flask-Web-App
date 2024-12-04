@@ -66,7 +66,7 @@
     </div>
 
     <!-- Product Cards -->
-    <div class="container mt-4">
+    <!-- <div class="container mt-4">
         <div class="row">
             {% for product in products %}
                 <div class="col-md-4 mb-4">
@@ -91,8 +91,60 @@
                 </div>
             {% endfor %}
         </div>
-    </div>
+    </div> -->
     
+    <div class="container mt-4">
+        <div class="row">
+            {% for product in products %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="{{ product.image_path }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <span class="badge bg-secondary">{{ product.category_name }}</span>
+                            <p class="card-text">
+                                <strong>Price:</strong> ${{ product.price }}<br>
+                                <strong>Quantity:</strong> {{ product.quantity }}
+                            </p>
+                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#productModal{{ product.id }}">
+                                View Details
+                            </button>
+                            <form method="post" class="d-flex justify-content-between mt-2">
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                <button type="button" class="btn btn-outline-primary like-btn" data-product-id="{{ product.id }}">
+                                    <i class="fas fa-heart"></i> Like
+                                </button>
+                                <button type="submit" name="action" value="add_to_basket" class="btn btn-outline-success">
+                                    <i class="fas fa-shopping-cart"></i> Add to Basket
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Modal for Product Details -->
+                    <div class="modal fade" id="productModal{{ product.id }}" tabindex="-1" aria-labelledby="productModalLabel{{ product.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="productModalLabel{{ product.id }}">{{ product.name }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="{{ product.image_path }}" alt="{{ product.name }}" class="img-fluid mb-3">
+                                    <p><strong>Category:</strong> {{ product.category_name }}</p>
+                                    <p><strong>Price:</strong> ${{ product.price }}</p>
+                                    <p><strong>Quantity:</strong> {{ product.quantity }}</p>
+                                    <!-- Add more detailed information here if needed -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url_for('static', filename='js/footerDate.js') }}"></script>
     <script src="{{ url_for('static', filename='js/filterFunction.js') }}"></script>

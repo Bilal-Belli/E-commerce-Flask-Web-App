@@ -65,34 +65,7 @@
         </div>
     </div>
 
-    <!-- Product Cards -->
-    <!-- <div class="container mt-4">
-        <div class="row">
-            {% for product in products %}
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text">
-                                <strong>Price:</strong> ${{ product.price }} <br>
-                                <strong>Quantity:</strong> {{ product.quantity }}
-                            </p>
-                            <form method="post" class="d-flex justify-content-between">
-                                <input type="hidden" name="product_id" value="{{ product.id }}">
-                                <button type="button" class="btn btn-outline-primary like-btn" data-product-id="{{ product.id }}">
-                                    <i class="fas fa-heart"></i> Like
-                                </button>
-                                <button type="submit" name="action" value="add_to_basket" class="btn btn-outline-success">
-                                    <i class="fas fa-shopping-cart"></i> Add to Basket
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    </div> -->
-    
+    <!-- Product Card -->
     <div class="container mt-4">
         <div class="row">
             {% for product in products %}

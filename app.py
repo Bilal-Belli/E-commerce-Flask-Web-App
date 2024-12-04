@@ -126,49 +126,6 @@ def like_product():
         cursor.close()
         connection.close()
 
-# @app.route('/')
-# @app.route('/home', methods=['GET', 'POST'])
-# def home():
-#     if 'user_id' not in session:
-#         flash("Please log in to access this page.", "warning")
-#         return redirect(url_for('login'))
-
-#     user_id = session['user_id']
-#     connection = get_db_connection()
-#     cursor = connection.cursor(dictionary=True)
-
-#     try:
-#         # Fetch products with quantity > 0
-#         query = "SELECT * FROM products WHERE quantity > 0"
-#         cursor.execute(query)
-#         products = cursor.fetchall()
-
-#         # Handle 'add to basket' action
-#         if request.method == 'POST':
-#             product_id = request.form['product_id']
-#             action = request.form['action']
-
-#             if action == 'add_to_basket':
-#                 # Add product to basket
-#                 basket_query = """
-#                     INSERT INTO baskets (user_id, product_id, quantity)
-#                     VALUES (%s, %s, 1)
-#                     ON DUPLICATE KEY UPDATE quantity = quantity + 1
-#                 """
-#                 cursor.execute(basket_query, (user_id, product_id))
-#                 connection.commit()
-#                 flash("Product added to your basket!", "success")
-
-#         # Refresh the products list after any changes
-#         cursor.execute(query)
-#         products = cursor.fetchall()
-
-#     finally:
-#         cursor.close()
-#         connection.close()
-
-#     return render_template('home.html', products=products)
-
 @app.route('/')
 @app.route('/home', methods=['GET', 'POST'])
 def home():

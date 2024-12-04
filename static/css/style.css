@@ -104,34 +104,57 @@ footer {
     font-size: inherit; /* Adjust with body text size */
 }
 
-/* High Contrast Styles */
 body.high-contrast {
     background-color: black !important;
     color: white !important;
 }
 
 .high-contrast .card, 
-.high-contrast .price-filter {
+.high-contrast .price-filter,
+.high-contrast .modal-content {
     background-color: #333 !important;
     border-color: white !important;
+    color: white !important;
 }
 
 .high-contrast input, 
-.high-contrast button {
+.high-contrast button,
+.high-contrast .modal-header,
+.high-contrast .modal-footer {
     background-color: #444 !important;
     color: white !important;
     border-color: white !important;
 }
 
+.high-contrast .modal-header .btn-close {
+    filter: invert(1);
+}
+
 /* Font Size Adjustments */
-.text-small {
+.text-small,
+.text-small .modal-body {
     font-size: 12px !important;
 }
 
-.text-medium {
+.text-medium,
+.text-medium .modal-body {
     font-size: 16px !important;
 }
 
-.text-large {
+.text-large,
+.text-large .modal-body {
     font-size: 20px !important;
+}
+
+/* Adjust modal title sizes */
+.text-small .modal-title {
+    font-size: 16px !important;
+}
+
+.text-medium .modal-title {
+    font-size: 20px !important;
+}
+
+.text-large .modal-title {
+    font-size: 24px !important;
 }

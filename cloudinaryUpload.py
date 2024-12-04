@@ -8,37 +8,18 @@ cloudinary.config(
     api_secret = 'pacUnfaWwm73BsnggQbnY20eGdA'
 )
 
-# Upload the image
 response = cloudinary.uploader.upload(r"C:\Users\Hp\OneDrive\Bureau\flaskUpworkGit\imagesExamples\laptop.jpg")
-
-# Get the URL of the uploaded image
 image_url = response['url']
-
-# Save the image URL in your database
 print(f"Image URL: {image_url}")
 
-
-
 response = cloudinary.uploader.upload(r"C:\Users\Hp\OneDrive\Bureau\flaskUpworkGit\imagesExamples\headphones.jpg")
-
-# Get the URL of the uploaded image
 image_url = response['url']
-
-# Save the image URL in your database
 print(f"Image URL: {image_url}")
 
 response = cloudinary.uploader.upload(r"C:\Users\Hp\OneDrive\Bureau\flaskUpworkGit\imagesExamples\smartphone.jpg")
-
-# Get the URL of the uploaded image
 image_url = response['url']
-
-# Save the image URL in your database
 print(f"Image URL: {image_url}")
 
 response = cloudinary.uploader.upload(r"C:\Users\Hp\OneDrive\Bureau\flaskUpworkGit\imagesExamples\keyboard.jpg")
-
-# Get the URL of the uploaded image
 image_url = response['url']
-
-# Save the image URL in your database
 print(f"Image URL: {image_url}")

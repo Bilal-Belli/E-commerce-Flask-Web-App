@@ -11,13 +11,22 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Table to store product categories
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE
+);
+
 -- Table to store product information
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
     quantity INT NOT NULL CHECK (quantity >= 0),
     price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    image LONGBLOB,
+    category_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );
 
 -- Table to store basket items for each user

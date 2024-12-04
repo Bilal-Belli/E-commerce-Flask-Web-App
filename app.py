@@ -23,7 +23,6 @@ db_config = {
 def get_db_connection():
     return mysql.connector.connect(**db_config)
 
-# Register route
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -33,17 +32,23 @@ def register():
 
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         connection = get_db_connection()
-        cursor = connection.cursor()
+        cursor = connection.cursor(dictionary=True)
 
         try:
-            # Insert new user into the database
-            query = "INSERT INTO users (username, password_hash, solde) VALUES (%s, %s, %s)"
-            cursor.execute(query, (username, hashed_password, solde))
-            connection.commit()
-            flash('Account created successfully. Please log in.', 'success')
-            return redirect(url_for('login'))
-        except mysql.connector.Error as e:
-            flash('Username already exists.', 'danger')
+            # Check if username already exists
+            check_query = "SELECT id FROM users WHERE username = %s"
+            cursor.execute(check_query, (username,))
+            existing_user = cursor.fetchone()
+
+            if existing_user:
+                flash('Username already exists. Please choose a different one.', 'danger')
+            else:
+                # Insert new user into the database
+                query = "INSERT INTO users (username, password_hash, solde) VALUES (%s, %s, %s)"
+                cursor.execute(query, (username, hashed_password, solde))
+                connection.commit()
+                flash('Account created successfully. Please log in.', 'success')
+                return redirect(url_for('login'))
         finally:
             cursor.close()
             connection.close()
